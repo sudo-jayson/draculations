@@ -1,5 +1,4 @@
 use rand::seq::{IteratorRandom, SliceRandom};
-use rand::Rng;
 use rodio::{source::Source, Decoder, OutputStream};
 use std::fs;
 use std::io::{self, stdout, BufRead, BufReader, Write};
@@ -42,12 +41,10 @@ fn set_sfx() -> String {
 
 fn play_sfx(_sfx: String) -> io::Result<()> {
     let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-    let _delay = rand::thread_rng().gen_range(40..200);
-
     let sfx_file = BufReader::new(fs::File::open(_sfx).unwrap());
     let source = Decoder::new(sfx_file).unwrap();
     let _ = stream_handle.play_raw(source.convert_samples());
-    std::thread::sleep(std::time::Duration::from_millis(_delay));
+    std::thread::sleep(std::time::Duration::from_millis(63));
 
     Ok(())
 }
